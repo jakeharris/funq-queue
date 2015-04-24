@@ -215,6 +215,7 @@ void BookKeeping(void){
     Tatat += atat;
 
     printf("DEVICE %d ==========\n", did);
+    printf("%ld events handled", reportData[did][HANDLED_EVENTS]);
     printf("%f%% missed\n", pme);
     printf("%f s average response time\n", art);
     printf("%f s average turnaround time\n", atat);
