@@ -1,2 +1,2 @@
 default:
-	cc -o lab2 devices2.o lab2.c -lm
+	cc -o lab3 devices3.o lab3.c -lm
