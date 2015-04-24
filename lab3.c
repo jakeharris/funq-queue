@@ -143,7 +143,7 @@ void Control(void){
   Identifier did = 1; // Device ID
   QueueInitialization();
   while (1) {
-    if((did & Flags) == 1) {
+    if(!isEmpty(&queue[did])) {
       Server(peek(&queue[did]));
       queue[did] = *dequeue(&queue[did]);
       did = 0;
