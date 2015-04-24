@@ -148,7 +148,7 @@ void Control(void){
       did = 0;
     }
     did <<= 1;
-    if((did & 0) == 0) did = 1;
+    if((did | 0) == 0) did = 1;
   }
 }
 
