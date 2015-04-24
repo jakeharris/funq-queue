@@ -108,7 +108,7 @@ void QueueInitialization() {
   }
 }
 
-float reportData[MAX_NUMBER_DEVICES][3]; // events handled + response time + turnaround time = 3
+double reportData[MAX_NUMBER_DEVICES][3]; // events handled + response time + turnaround time = 3
 
 /*****************************************************************************\
 *                               Function prototypes                           *
