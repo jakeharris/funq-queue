@@ -108,7 +108,7 @@ void QueueInitialization() {
   }
 }
 
-long int reportData[MAX_NUMBER_DEVICES][3]; // events handled + response time + turnaround time = 3
+float reportData[MAX_NUMBER_DEVICES][3]; // events handled + response time + turnaround time = 3
 
 /*****************************************************************************\
 *                               Function prototypes                           *
@@ -208,15 +208,15 @@ void BookKeeping(void){
   for(did = 0; did < MAX_NUMBER_DEVICES; did++) {
     if(reportData[did][HANDLED_EVENTS] <= 0) break;
     float pme = ((float)(BufferLastEvent[did].EventID + 1 - (reportData[did][HANDLED_EVENTS])) / BufferLastEvent[did].EventID) * 100; // percentage of missed events
-    float art = (float)reportData[did][RESPONSE_TIME] / reportData[did][HANDLED_EVENTS]; // average response time
-    float atat = (float)reportData[did][TURNAROUND_TIME] / reportData[did][HANDLED_EVENTS];// average turnaround time
+    float art = reportData[did][RESPONSE_TIME] / reportData[did][HANDLED_EVENTS]; // average response time
+    float atat = reportData[did][TURNAROUND_TIME] / reportData[did][HANDLED_EVENTS];// average turnaround time
 
     Tpme += pme;
     Tart += art;
     Tatat += atat;
 
     printf("DEVICE %d ==========\n", did);
-    printf("%ld events handled\n", reportData[did][HANDLED_EVENTS]);
+    printf("%d events handled\n", (int)reportData[did][HANDLED_EVENTS]);
     printf("%f%% missed\n", pme);
     printf("%f s average response time\n", art);
     printf("%f s average turnaround time\n", atat);
