@@ -204,11 +204,12 @@ void BookKeeping(void){
   float Tpme = 0; // Total pme
   float Tart = 0; // Total art
   float Tatat = 0; // Total atat
+  printf("\n");
   for(did = 0; did < MAX_NUMBER_DEVICES; did++) {
     if(reportData[did][HANDLED_EVENTS] <= 0) break;
     float pme = ((float)(BufferLastEvent[did].EventID + 1 - (reportData[did][HANDLED_EVENTS])) / BufferLastEvent[did].EventID) * 100; // percentage of missed events
-    float art = reportData[did][RESPONSE_TIME] / reportData[did][HANDLED_EVENTS]; // average response time
-    float atat = reportData[did][TURNAROUND_TIME] / reportData[did][HANDLED_EVENTS];// average turnaround time
+    float art = (float)reportData[did][RESPONSE_TIME] / reportData[did][HANDLED_EVENTS]; // average response time
+    float atat = (float)reportData[did][TURNAROUND_TIME] / reportData[did][HANDLED_EVENTS];// average turnaround time
 
     Tpme += pme;
     Tart += art;
