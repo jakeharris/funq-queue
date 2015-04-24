@@ -206,7 +206,7 @@ void BookKeeping(void){
   float Tatat = 0; // Total atat
   for(did = 0; did < MAX_NUMBER_DEVICES; did++) {
     if(reportData[did][HANDLED_EVENTS] <= 0) break;
-    float pme = (BufferLastEvent[did].EventID - (reportData[did][HANDLED_EVENTS]) / BufferLastEvent[did].EventID) * 100; // percentage of missed events
+    float pme = ((float)(BufferLastEvent[did].EventID + 1 - (reportData[did][HANDLED_EVENTS])) / BufferLastEvent[did].EventID) * 100; // percentage of missed events
     float art = reportData[did][RESPONSE_TIME] / reportData[did][HANDLED_EVENTS]; // average response time
     float atat = reportData[did][TURNAROUND_TIME] / reportData[did][HANDLED_EVENTS];// average turnaround time
 
@@ -215,7 +215,7 @@ void BookKeeping(void){
     Tatat += atat;
 
     printf("DEVICE %d ==========\n", did);
-    printf("%ld events handled", reportData[did][HANDLED_EVENTS]);
+    printf("%ld events handled\n", reportData[did][HANDLED_EVENTS]);
     printf("%f%% missed\n", pme);
     printf("%f s average response time\n", art);
     printf("%f s average turnaround time\n", atat);
