@@ -97,7 +97,8 @@ Event * peek(EventQueue *eq) {
 \*****************************************************************************/
 EventQueue queue [MAX_NUMBER_DEVICES];
 void QueueInitialization() {
-  for(int x = 0; x <= MAX_NUMBER_DEVICES; x++) {
+  int x;
+  for(x = 0; x <= MAX_NUMBER_DEVICES; x++) {
     queue[x] = BLANK_QUEUE;
   }
 }
