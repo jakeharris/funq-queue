@@ -31,6 +31,8 @@ typedef struct EventQueue {
   Event contents[Q];
 } EventQueue;
 
+const struct EventQueue BLANK_QUEUE = { .head = 0, .tail = -1 };
+
 EventQueue * enqueue(EventQueue *eq, Event e) {
   if(eq->tail == -1) {
     eq->tail = eq->head;
@@ -90,13 +92,15 @@ Event * peek(EventQueue *eq) {
 
 
 
-
-
 /*****************************************************************************\
 *                                  Global data                                *
 \*****************************************************************************/
-EventQueue queue = (EventQueue){ .head = 0, .tail = -1 };
-
+EventQueue queue [MAX_NUMBER_DEVICES];
+void QueueInitialization() {
+  for(int x = 0; x <= MAX_NUMBER_DEVICES; x++) {
+    queue[x] = BLANK_QUEUE;
+  }
+}
 
 
 /*****************************************************************************\
@@ -135,10 +139,17 @@ int main (int argc, char **argv) {
  \***********************************************************************/
 void Control(void){
 
+  Identifier did = 1; // Device ID
+  QueueInitialization();
   while (1) {
-
+    if((did & Flags) == 1) {
+      Server(peek(&queue[did]));
+      queue[did] = *dequeue(&queue[did]);
+      did = 0;
+    }
+    did <<= 1;
+    if((did & 0) == 0) did = 1;
   }
-
 }
 
 
