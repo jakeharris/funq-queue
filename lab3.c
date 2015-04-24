@@ -22,6 +22,11 @@
 #define MAX_QUEUE_SIZE 32 /* Max queue size */
 #define Q 2 /* Queue depth for each device */
 
+// # For data collection
+#define HANDLED_EVENTS 0
+#define RESPONSE_TIME 1
+#define TURNAROUND_TIME 2
+
 /*****************************************************************************\
 *                            Global data structures                           *
 \*****************************************************************************/
@@ -103,6 +108,7 @@ void QueueInitialization() {
   }
 }
 
+long int reportData[MAX_NUMBER_DEVICES][3]; // events handled + response time + turnaround time = 3
 
 /*****************************************************************************\
 *                               Function prototypes                           *
@@ -145,7 +151,10 @@ void Control(void){
   while (1) {
     if(!isEmpty(&queue[did])) {
       Server(peek(&queue[did]));
+      reportData[did][TURNAROUND_TIME] += Now() - peek(&queue[did])->When;
       queue[did] = *dequeue(&queue[did]);
+
+      reportData[did][HANDLED_EVENTS] += 1;
       did = 0;
       continue;
     }
@@ -172,6 +181,7 @@ void InterruptRoutineHandlerDevice(void){
   while(flags) {
     if(flags & 1) {
       queue[did] = *enqueue(&queue[did], BufferLastEvent[did]);
+      reportData[did][RESPONSE_TIME] += Now() - BufferLastEvent[did].When;
     }
     did++;
     flags >>= 1;
@@ -190,4 +200,34 @@ void BookKeeping(void){
   // 1) the percentage of missed events, 2) the average response time, and
   // 3) the average turnaround time.
   // Print the overall averages of the three metrics 1-3 above
+  int did;
+  float Tpme = 0; // Total pme
+  float Tart = 0; // Total art
+  float Tatat = 0; // Total atat
+  for(did = 0; did < MAX_NUMBER_DEVICES; did++) {
+    if(reportData[did][HANDLED_EVENTS] <= 0) break;
+    float pme = (BufferLastEvent[did].EventID - (reportData[did][HANDLED_EVENTS]) / BufferLastEvent[did].EventID) * 100; // percentage of missed events
+    float art = reportData[did][RESPONSE_TIME] / reportData[did][HANDLED_EVENTS]; // average response time
+    float atat = reportData[did][TURNAROUND_TIME] / reportData[did][HANDLED_EVENTS];// average turnaround time
+
+    Tpme += pme;
+    Tart += art;
+    Tatat += atat;
+
+    printf("DEVICE %d ==========\n", did);
+    printf("%f%% missed\n", pme);
+    printf("%f s average response time\n", art);
+    printf("%f s average turnaround time\n", atat);
+    printf("\n");
+  }
+
+  Tpme /= (did + 1); // Total number of handled devices = did + 1
+  Tart /= (did + 1);
+  Tatat /= (did + 1);
+
+  printf("FINAL RESULTS ==========\n");
+  printf("%f%% missed\n", Tpme);
+  printf("%f s average response time\n", Tart);
+  printf("%f s average turnaround time\n", Tatat);
+  printf("\n");
 }
