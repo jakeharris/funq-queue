@@ -140,16 +140,17 @@ int main (int argc, char **argv) {
  \***********************************************************************/
 void Control(void){
 
-  Identifier did = 1; // Device ID
+  Identifier did = 0; // Device ID
   QueueInitialization();
   while (1) {
     if(!isEmpty(&queue[did])) {
       Server(peek(&queue[did]));
       queue[did] = *dequeue(&queue[did]);
       did = 0;
+      continue;
     }
-    did <<= 1;
-    if(~(did | 0)) did = 1;
+    did += 1;
+    if(did >= MAX_NUMBER_DEVICES) did = 0;
   }
 }
 
