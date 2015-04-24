@@ -149,7 +149,7 @@ void Control(void){
       did = 0;
     }
     did <<= 1;
-    if((did | 0) == 0) did = 1;
+    if(~(did | 0)) did = 1;
   }
 }
 
@@ -162,8 +162,19 @@ void Control(void){
 \***********************************************************************/
 void InterruptRoutineHandlerDevice(void){
   printf("An event occured at %f  Flags = %d \n", Now(), Flags);
-
 	// Put Here the most urgent steps that cannot wait
+  Status flags = Flags; // lower-case is our temp clone
+  Identifier did = 0; // Device ID
+
+  Flags = 0; // Allow Flags to start counting events again immediately
+
+  while(flags) {
+    if(flags & 1) {
+      queue[did] = *enqueue(&queue[did], BufferLastEvent[did]);
+    }
+    did++;
+    flags >>= 1;
+  }
 }
 
 
