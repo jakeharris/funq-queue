@@ -150,11 +150,11 @@ void Control(void){
   QueueInitialization();
   while (1) {
     if(!isEmpty(&queue[did])) {
+      reportData[did][HANDLED_EVENTS] += 1;
       Server(peek(&queue[did]));
       reportData[did][TURNAROUND_TIME] += Now() - peek(&queue[did])->When;
       queue[did] = *dequeue(&queue[did]);
 
-      reportData[did][HANDLED_EVENTS] += 1;
       did = 0;
       continue;
     }
