@@ -218,8 +218,8 @@ void BookKeeping(void){
     printf("DEVICE %d ==========\n", did);
     printf("%d events handled\n", (int)reportData[did][HANDLED_EVENTS]);
     printf("%f%% missed\n", pme);
-    printf("%f s average response time\n", art);
-    printf("%f s average turnaround time\n", atat);
+    printf("%fs average response time\n", art);
+    printf("%fs average turnaround time\n", atat);
     printf("\n");
   }
 
@@ -229,7 +229,7 @@ void BookKeeping(void){
 
   printf("FINAL RESULTS ==========\n");
   printf("%f%% missed\n", Tpme);
-  printf("%f s average response time\n", Tart);
-  printf("%f s average turnaround time\n", Tatat);
+  printf("%fs average response time\n", Tart);
+  printf("%fs average turnaround time\n", Tatat);
   printf("\n");
 }
