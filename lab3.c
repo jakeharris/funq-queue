@@ -20,7 +20,7 @@
 *                             Global definitions                              *
 \*****************************************************************************/
 #define MAX_QUEUE_SIZE 32 /* Max queue size */
-#define Q 2 /* Queue depth for each device */
+#define Q 8 /* Queue depth for each device */
 
 // # For data collection
 #define HANDLED_EVENTS 0
